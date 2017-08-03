@@ -10,6 +10,7 @@ node {
     try {
         isPullRequest = env.BRANCH_NAME.startsWith('PR-')
         echo "Starting pipeline for DCAS Ui version ${version}_${env.BUILD_NUMBER}"
+        sh "node -v"
 
         stage('Checkout') {
             echo "Checking out the source code" 
@@ -18,16 +19,26 @@ node {
 
         stage('Build Bff') {
             echo "Building Bff" 
+            dir ('dcas-bff') {
+                sh 'npm install'
+                sh 'npm run build'
+            }
         }
 
         stage('Build Ui') {
-            echo "Building Ui"    
+            echo "Building Ui"   
+            dir ('dcas-ui') {
+                sh 'npm install'
+                sh 'npm run build'
+            } 
         }
 
         lock('Docker') {
 
           stage('Build Docker Images') {
               echo "Building Ui"  
+              sh 'docker-compose build'
+              sh 'docker images'
             // sh 'docker images | grep ^portal/ | grep SNAPSHOT | awk {\'print $3\'} | xargs --no-run-if-empty docker rmi -f'
             // sh "docker build -t ${imagePrefix}/ui:${version} ."
             // sh "docker build -t ${imagePrefix}/bff:${version} -f BFF/portal/Dockerfile ."
