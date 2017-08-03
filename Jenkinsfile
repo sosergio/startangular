@@ -60,6 +60,7 @@ node {
             def imageVersion = "${version}_${env.BUILD_NUMBER}"
 
             stage('Set AWS Assumed Roles') {
+                echo "Set AWS Assumed Roles"  
                 sh "aws sts assume-role --role-arn 'arn:aws:iam::845221390844:role/CA_JKN_DEV' --role-session-name 'cs-dcas-jenkins' --output text | tail -n 1 | awk '{print \$2; print \$4; print \$5}' > .env"
                 def awsEnv = readFile('.env').trim()
                 awsAccessKeyId = awsEnv.readLines()[0]
@@ -76,14 +77,17 @@ node {
                 }
 
                 stage('Push Images To ECR') {
+                    echo "Push Images To ECR"  
                     sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${imageVersion}"
                 }
 
                 stage('Deploy Services On AWS') {
-                //    parallel(
-                            images: {
-                                sh "java -jar aws-deployment-tool.jar deployImages --ecr ${ecr} --version ${imageVersion} --environment test --company atoc --project dcas --parallelDeployments 5 --scriptLocation integration/update-ecs-service.sh"
-                            },
+                    echo 'Deploy Services On AWS'
+                    sh "java -jar aws-deployment-tool.jar deployImages --ecr ${ecr} --version ${imageVersion} --environment test --company atoc --project dcas --parallelDeployments 5 --scriptLocation integration/update-ecs-service.sh"
+                    //    parallel(
+                        // images: {
+                        //     sh "java -jar aws-deployment-tool.jar deployImages --ecr ${ecr} --version ${imageVersion} --environment test --company atoc --project dcas --parallelDeployments 5 --scriptLocation integration/update-ecs-service.sh"
+                            // },
                     //         lambda: {
                     //             sh "java -jar aws-deployment-tool.jar updateLambdaFunction --functionName dcas-lambda-sdci01-${environment['name']} --zipFile code/sales-data-capture/sdci-plus-file-listener/target/sdci-plus-file-listener-${version}.jar"
                     //         }
