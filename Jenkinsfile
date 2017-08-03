@@ -9,9 +9,12 @@ node {
             setupEnv()
             isPullRequest = env.BRANCH_NAME.startsWith('PR-')
             echo "Starting pipeline for DCAS Ui version ${version}_${env.BUILD_NUMBER}"
+
+            def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+            env.PATH = "${nodeHome}/bin:${env.PATH}"
             sh "node -v"
         }
-        
+
         stage('Checkout') {
             echo "Checking out the source code" 
             checkout scm   
@@ -45,7 +48,7 @@ node {
           }
 
            if (env.BRANCH_NAME.equals("develop")) {
-              stage('Push to ECR') {
+              stage('Push images to ECR') {
                   echo "Pushing images to ECR"  
                 // sh "/usr/local/bin/aws s3 cp s3://s3-kcom-maven-atocportaltest/release/com/kcom/common/aws-deployment-tool/0.0.33/aws-deployment-tool-0.0.33.jar ./aws-deployment-tool.jar"
                 // sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${version}_${env.BUILD_NUMBER}"
