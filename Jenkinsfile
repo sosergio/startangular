@@ -53,8 +53,6 @@ node {
             //   }
           //}
 
-
-
             def awsAccessKeyId
             def awsSecretAccessKey
             def awsSessionToken
