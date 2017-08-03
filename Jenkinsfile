@@ -46,12 +46,57 @@ node {
           }
 
            //if (env.BRANCH_NAME.equals("develop")) {
-              stage('Push images to ECR') {
-                    echo "Pushing images to ECR"  
-                    sh "/usr/local/bin/aws s3 cp s3://s3-kcom-maven-atocportaltest/release/com/kcom/common/aws-deployment-tool/0.0.33/aws-deployment-tool-0.0.33.jar ./aws-deployment-tool.jar"
-                    sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${version}_${env.BUILD_NUMBER}"
-              }
+            //   stage('Push images to ECR') {
+            //         echo "Pushing images to ECR"  
+            //         sh "/usr/local/bin/aws s3 cp s3://s3-kcom-maven-atocportaltest/release/com/kcom/common/aws-deployment-tool/0.0.33/aws-deployment-tool-0.0.33.jar ./aws-deployment-tool.jar"
+            //         sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${version}_${env.BUILD_NUMBER}"
+            //   }
           //}
+
+
+
+            def awsAccessKeyId
+            def awsSecretAccessKey
+            def awsSessionToken
+            // def props = readProperties file: './integration/jenkins/jobs/deploy.properties'
+            
+            def imageVersion = "${version}_${environment['name']}_${env.BUILD_NUMBER}"
+
+
+            stage('Set AWS Assumed Roles') {
+                sh "aws sts assume-role --role-arn 'arn:aws:iam::845221390844:role/CA_JKN_DEV' --role-session-name 'cs-dcas-jenkins' --output text | tail -n 1 | awk '{print \$2; print \$4; print \$5}' > .env"
+                def awsEnv = readFile('.env').trim()
+                awsAccessKeyId = awsEnv.readLines()[0]
+                awsSecretAccessKey = awsEnv.readLines()[1]
+                awsSessionToken = awsEnv.readLines()[2]
+            }
+
+            withEnv(["AWS_ACCESS_KEY_ID=$awsAccessKeyId",
+                        "AWS_SECRET_ACCESS_KEY=$awsSecretAccessKey",
+                        "AWS_SESSION_TOKEN=$awsSessionToken"]) {
+
+            stage('Download aws-development-tool') {
+                sh "/usr/local/bin/aws s3 cp s3://s3-kcom-maven-dcasdev/release/com/kcom/common/aws-deployment-tool/0.0.56/aws-deployment-tool-0.0.56.jar ./aws-deployment-tool.jar"
+            }
+
+            stage('Push Images To ECR') {
+                sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${imageVersion}"
+            }
+
+                
+                // stage('Deploy Services On AWS') {
+                //     parallel(
+                //             images: {
+                //                 sh "java -jar aws-deployment-tool.jar deployImages --ecr 845221390844.dkr.ecr.eu-west-1.amazonaws.com/ecrdcasdevtest --version $imageVersion --environment ${environment['name']} --company atoc --project dcas --parallelDeployments 5 --scriptLocation integration/aws/PipelineResources/update-ecs-service.sh --skipImages ${props['excludedImages']}"
+                //             },
+                //             lambda: {
+                //                 sh "java -jar aws-deployment-tool.jar updateLambdaFunction --functionName dcas-lambda-sdci01-${environment['name']} --zipFile code/sales-data-capture/sdci-plus-file-listener/target/sdci-plus-file-listener-${version}.jar"
+                //             }
+                //     )
+                // }
+
+
+
 
           //stage('Clean') {
             // sh 'docker images | grep ^portal/ | grep SNAPSHOT | awk {\'print $3\'} | xargs --no-run-if-empty docker rmi -f'
@@ -84,5 +129,5 @@ void setupEnv() {
   env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
   env.PATH = "/usr/local/bin:${env.PATH}"
   env.DOCKER_IP = "127.0.0.1"
-  env.COMPOSE_PROJECT_NAME = "rdg-frontend-portal"
+  env.COMPOSE_PROJECT_NAME = "rdg-frontend-dcas"
 }
