@@ -57,7 +57,7 @@ node {
             def awsSecretAccessKey
             def awsSessionToken
             // def props = readProperties file: './integration/jenkins/jobs/deploy.properties' 
-            def imageVersion = "${version}_${environment['name']}_${env.BUILD_NUMBER}"
+            def imageVersion = "${version}_${env.BUILD_NUMBER}"
 
             stage('Set AWS Assumed Roles') {
                 sh "aws sts assume-role --role-arn 'arn:aws:iam::845221390844:role/CA_JKN_DEV' --role-session-name 'cs-dcas-jenkins' --output text | tail -n 1 | awk '{print \$2; print \$4; print \$5}' > .env"
