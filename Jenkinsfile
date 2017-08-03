@@ -20,13 +20,14 @@ node {
             checkout scm   
         }
 
-        stage('Build Bff') {
-            echo "Building Bff" 
-            dir ('dcas-bff') {
-                sh 'npm install'
-                sh 'npm run build'
-            }
-        }
+        // is done inside the docker image
+        // stage('Build Bff') {
+        //     echo "Building Bff" 
+        //     dir ('dcas-bff') {
+        //         sh 'npm install'
+        //         sh 'npm run build'
+        //     }
+        // }
 
         stage('Build Ui') {
             echo "Building Ui"   
@@ -39,21 +40,18 @@ node {
         lock('Docker') {
 
           stage('Build Docker Images') {
-              echo "Building Ui"  
+              echo "Building Docker Images"  
               sh 'docker-compose build'
               sh 'docker images'
-            // sh 'docker images | grep ^portal/ | grep SNAPSHOT | awk {\'print $3\'} | xargs --no-run-if-empty docker rmi -f'
-            // sh "docker build -t ${imagePrefix}/ui:${version} ."
-            // sh "docker build -t ${imagePrefix}/bff:${version} -f BFF/portal/Dockerfile ."
           }
 
-           if (env.BRANCH_NAME.equals("develop")) {
+           //if (env.BRANCH_NAME.equals("develop")) {
               stage('Push images to ECR') {
-                  echo "Pushing images to ECR"  
-                // sh "/usr/local/bin/aws s3 cp s3://s3-kcom-maven-atocportaltest/release/com/kcom/common/aws-deployment-tool/0.0.33/aws-deployment-tool-0.0.33.jar ./aws-deployment-tool.jar"
-                // sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${version}_${env.BUILD_NUMBER}"
+                    echo "Pushing images to ECR"  
+                    sh "/usr/local/bin/aws s3 cp s3://s3-kcom-maven-atocportaltest/release/com/kcom/common/aws-deployment-tool/0.0.33/aws-deployment-tool-0.0.33.jar ./aws-deployment-tool.jar"
+                    sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${version}_${env.BUILD_NUMBER}"
               }
-           }
+          //}
 
           //stage('Clean') {
             // sh 'docker images | grep ^portal/ | grep SNAPSHOT | awk {\'print $3\'} | xargs --no-run-if-empty docker rmi -f'
