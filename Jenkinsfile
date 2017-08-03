@@ -10,7 +10,7 @@ node {
             isPullRequest = env.BRANCH_NAME.startsWith('PR-')
             echo "Starting pipeline for DCAS Ui version ${version}_${env.BUILD_NUMBER}"
 
-            def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+            def nodeHome = tool name: 'NodeJs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
             env.PATH = "${nodeHome}/bin:${env.PATH}"
             sh "node -v"
         }
