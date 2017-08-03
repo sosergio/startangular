@@ -4,14 +4,14 @@ def version = '0.0.9-SNAPSHOT'
 def imagePrefix = 'rdg-frontend-dcas'
 
 node {
-
-    setupEnv()
-
     try {
-        isPullRequest = env.BRANCH_NAME.startsWith('PR-')
-        echo "Starting pipeline for DCAS Ui version ${version}_${env.BUILD_NUMBER}"
-        sh "node -v"
-
+        stage('Configure') {
+            setupEnv()
+            isPullRequest = env.BRANCH_NAME.startsWith('PR-')
+            echo "Starting pipeline for DCAS Ui version ${version}_${env.BUILD_NUMBER}"
+            sh "node -v"
+        }
+        
         stage('Checkout') {
             echo "Checking out the source code" 
             checkout scm   
