@@ -79,16 +79,16 @@ node {
                     sh "java -jar aws-deployment-tool.jar pushToEcr --imagePrefix ${imagePrefix}/ --tag ${version} --ecr ${ecr} --ecrTagVersion ${imageVersion}"
                 }
 
-                // stage('Deploy Services On AWS') {
-                //     parallel(
-                //             images: {
-                //                 sh "java -jar aws-deployment-tool.jar deployImages --ecr 845221390844.dkr.ecr.eu-west-1.amazonaws.com/ecrdcasdevtest --version $imageVersion --environment ${environment['name']} --company atoc --project dcas --parallelDeployments 5 --scriptLocation integration/aws/PipelineResources/update-ecs-service.sh --skipImages ${props['excludedImages']}"
-                //             },
-                //             lambda: {
-                //                 sh "java -jar aws-deployment-tool.jar updateLambdaFunction --functionName dcas-lambda-sdci01-${environment['name']} --zipFile code/sales-data-capture/sdci-plus-file-listener/target/sdci-plus-file-listener-${version}.jar"
-                //             }
-                //     )
-                // }  
+                stage('Deploy Services On AWS') {
+                //    parallel(
+                            images: {
+                                sh "java -jar aws-deployment-tool.jar deployImages --ecr ${ecr} --version ${imageVersion} --environment test --company atoc --project dcas --parallelDeployments 5 --scriptLocation integration/update-ecs-service.sh"
+                            },
+                    //         lambda: {
+                    //             sh "java -jar aws-deployment-tool.jar updateLambdaFunction --functionName dcas-lambda-sdci01-${environment['name']} --zipFile code/sales-data-capture/sdci-plus-file-listener/target/sdci-plus-file-listener-${version}.jar"
+                    //         }
+                    // )
+                }  
 
             }
             // stage('Clean') {
