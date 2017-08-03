@@ -1,0 +1,15 @@
+
+  <div class="dcas-page-header">
+    <a class="shell-nav-toggle" dcas-shell-nav-toggle><span class="material-icons">menu</span></a>
+    <div class="title-area">
+      <p>
+        <ng-container *ngFor="let path of paths; let ix=index;">
+          <a [routerLink]="['../']" *ngIf="ix<paths.length-1">{{path.title}}<span class="material-icons">chevron_right</span></a>
+          <h2 *ngIf="ix==paths.length-1">{{path.title}}</h2>
+        </ng-container>
+      </p>
+    </div>
+    <div>
+      <ng-content></ng-content>
+    </div>
+  </div>

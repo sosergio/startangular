@@ -1,0 +1,1683 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: Reference Data Management API
+  description: The API to manage reference data.
+basePath: /v1
+schemes:
+  - http
+produces:
+  - application/json
+
+paths:
+
+  /reference-data-maintenance/{type}:
+
+    post:
+      description: Create a new reference data maintenance entity.
+      operationId: create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: body
+          description: The reference data maintenance entity payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ReferenceDataMaintenanceDto'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/ReferenceDataMaintenanceDto'
+      tags:
+        - ChangeRequest
+
+  /reference-data-maintenance/{type}/{id}:
+
+    get:
+      description: Retrieve a reference data maintenance entity by id.
+      operationId: getReferenceDataByMaintenanceId
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: id
+          description: The id that identifies the reference data maintenance entity.
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      tags:
+        - ChangeRequest
+
+    put:
+      description: Update an existing reference data maintenance entity.
+      operationId: update
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: id
+          description: The id that identifies the reference data maintenance entity.
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: body
+          description: The reference data maintenance entity payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ReferenceDataMaintenanceDto'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      tags:
+        - ChangeRequest
+
+    delete:
+      description: Delete an existing reference data maintenance entity.
+      operationId: delete
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: id
+          description: The id that identifies the reference data maintenance entity.
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+      tags:
+        - ChangeRequest
+
+  /reference-data-maintenance/{type}/submissions:
+
+    post:
+      description: Submit one or more existing reference data maintenance entities for approval.
+      operationId: submit
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: ids
+          description: A list of reference data maintenance entity ids to submit.
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        200:
+          description: OK
+      tags:
+        - ChangeRequest
+
+  /reference-data-maintenance/{type}/approvals:
+
+    post:
+      description: Approve one or more existing reference data maintenance entities.
+      operationId: approve
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: ids
+          description: A list of reference data maintenance entity ids to approve.
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        200:
+          description: OK
+      tags:
+        - ChangeRequest
+
+  /reference-data-maintenance/{type}/rejections:
+
+    post:
+      description: Reject one or more existing reference data maintenance entities.
+      operationId: reject
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: ids
+          description: A list of reference data maintenance entity ids to reject.
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        200:
+          description: OK
+      tags:
+        - ChangeRequest
+
+  /reference-data-maintenance/{type}/retractions:
+
+    post:
+      description: Retract one or more existing reference data maintenance entities.
+      operationId: retract
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: ids
+          description: A list of reference data maintenance entity ids to restract.
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        200:
+          description: OK
+      tags:
+        - ChangeRequest
+
+  /reference-data-maintenance/{type}/withdrawals:
+
+    post:
+      description: Withdraw one or more existing reference data maintenance entities.
+      operationId: withdraw
+      parameters:
+        - name: type
+          description: Type of reference data.
+          in: path
+          required: true
+          type: string
+        - name: ids
+          description: A list of reference data maintenance entity ids to withdraw.
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        200:
+          description: OK
+
+      tags:
+        - ChangeRequest
+
+definitions:
+
+  HttpStatus:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+
+  ReferenceDataMaintenanceDto:
+    type: object
+    discriminator: objectType
+    properties:
+      id:
+        type: integer
+        format: int64
+      objectType:
+        type: string
+      changeEffectiveDate:
+        type: string
+        format: date
+      approvalStatusId:
+        type: integer
+        format: int64
+
+  AccountingSundryMaintenanceDto:
+    x-discriminator-value: accounting-sundry
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          includeTisExtract:
+            type: boolean
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+          debitCreditTypeId:
+            type: integer
+            format: int64
+          accountingSundryId:
+            type: integer
+            format: int64
+
+  AdvanceIssueMarkerMaintenanceDto:
+    x-discriminator-value: advance-issue-marker
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          advanceIssueMarkerId:
+            type: integer
+            format: int64
+
+  AllocationFactorTypeMaintenanceDto:
+    x-discriminator-value: allocation-factor-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationFactorTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleMaintenanceDto:
+    x-discriminator-value: allocation-rule
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          priority:
+            type: integer
+            format: int32
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+          allocationRuleId:
+            type: integer
+            format: int64
+          allocationRuleTypeId:
+            type: integer
+            format: int64
+          allocationRuleOriginMatchTypeId:
+            type: integer
+            format: int64
+          allocationRuleDestinationMatchTypeId:
+            type: integer
+            format: int64
+          allocationRuleTicketStatusMatchTypeId:
+            type: integer
+            format: int64
+          allocationRuleRouteMatchTypeId:
+            type: integer
+            format: int64
+          allocationRuleProductMatchTypeId:
+            type: integer
+            format: int64
+          allocationRuleTicketAllocationMatchTypeId:
+            type: integer
+            format: int64
+          destinationLocationTypeId:
+            type: integer
+            format: int64
+          originLocationTypeId:
+            type: integer
+            format: int64
+          productTypeId:
+            type: integer
+            format: int64
+          ticketStatusTypeId:
+            type: integer
+            format: int64
+          transactionTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleDestinationMatchTypeMaintenanceDto:
+    x-discriminator-value: allocation-rule-destination-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationRuleDestinationMatchTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleOriginMatchTypeMaintenanceDto:
+    x-discriminator-value: allocation-rule-origin-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationRuleOriginMatchTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleProductMatchTypeMaintenanceDto:
+    x-discriminator-value: allocation-rule-product-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationRuleProductMatchTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleRouteMatchTypeMaintenanceDto:
+    x-discriminator-value: allocation-rule-route-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationRuleRouteMatchTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleTicketAllocationMatchTypeMaintenanceDto:
+    x-discriminator-value: allocation-rule-ticket-allocation-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationRuleTicketAllocationMatchTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleTicketStatusMatchTypeMaintenanceDto:
+    x-discriminator-value: allocation-rule-ticket-status-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationRuleTicketStatusMatchTypeId:
+            type: integer
+            format: int64
+
+  AllocationRuleTypeMaintenanceDto:
+    x-discriminator-value: allocation-rule-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          allocationRuleTypeId:
+            type: integer
+            format: int64
+
+  BusinessMaintenanceDto:
+    x-discriminator-value: business
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          shortName:
+            type: string
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+          businessTypeId:
+            type: integer
+            format: int64
+          parentBusinessId:
+            type: integer
+            format: int64
+          businessId:
+            type: integer
+            format: int64
+
+  BusinessTypeMaintenanceDto:
+    x-discriminator-value: business-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          businessTypeId:
+            type: integer
+            format: int64
+
+  ChannelTypeMaintenanceDto:
+    x-discriminator-value: channel-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          channelTypeId:
+            type: integer
+            format: int64
+
+  ClassIndicatorMaintenanceDto:
+    x-discriminator-value: class-indicator
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          classIndicatorId:
+            type: integer
+            format: int64
+
+  CommissionRateMaintenanceDto:
+    x-discriminator-value: commission-rate
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          commissionRateId:
+            type: integer
+            format: int64
+          percent:
+            type: number
+          amount:
+            type: number
+
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+
+  CommissionRuleMaintenanceDto:
+    x-discriminator-value: commission-rule
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          commissionRuleId:
+            type: integer
+            format: int64
+          priority:
+            type: integer
+            format: int32
+
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+
+  CommissionRuleBusinessMatchMaintenanceDto:
+    x-discriminator-value: commission-rule-business-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          commissionRuleBusinessMatchId:
+            type: integer
+            format: int64
+
+  CommissionRuleLocationMatchMaintenanceDto:
+    x-discriminator-value: commission-rule-location-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          commissionRuleLocationMatchId:
+            type: integer
+            format: int64
+
+  CommissionRuleMopMatchMaintenanceDto:
+    x-discriminator-value: commission-rule-mop-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          commissionRuleMopMatchId:
+            type: integer
+            format: int64
+
+  CommissionRuleOpModeMatchMaintenanceDto:
+    x-discriminator-value: commission-rule-op-mode-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          commissionRuleOpModeMatchId:
+            type: integer
+            format: int64
+
+  CommissionRuleProductMatchMaintenanceDto:
+    x-discriminator-value: commission-rule-product-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          commissionRuleProductMatchId:
+            type: integer
+            format: int64
+
+  CrossLondonMarkerMaintenanceDto:
+    x-discriminator-value: cross-london-marker
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          crossLondonMarkerId:
+            type: integer
+            format: int64
+
+  CurrencyMaintenanceDto:
+    x-discriminator-value: currency
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          currencyId:
+            type: integer
+            format: int64
+
+  DayOfWeekMaintenanceDto:
+    x-discriminator-value: day-of-week
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          dayOfWeekId:
+            type: integer
+            format: int64
+
+  DayTypeMaintenanceDto:
+    x-discriminator-value: day-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          dayTypeId:
+            type: integer
+            format: int64
+
+  DebitCreditTypeMaintenanceDto:
+    x-discriminator-value: debit-credit-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          debitCreditTypeId:
+            type: integer
+            format: int64
+
+  DefaultValueMaintenanceDto:
+    x-discriminator-value: default
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          value:
+            type: string
+          startDate:
+            type: string
+            format: date
+          endDate:
+            type: string
+            format: date
+          defaultValueId:
+            type: integer
+            format: int64
+          defaultValueTypeId:
+            type: integer
+            format: int64
+
+  DefaultValueTypeMaintenanceDto:
+    x-discriminator-value: default-value-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          dataType:
+            type: string
+          format:
+            type: string
+          minLength:
+            type: integer
+            format: int64
+          maxLength:
+            type: integer
+            format: int64
+          defaultValueTypeId:
+            type: integer
+            format: int64
+
+  DeferredIssueTypeMaintenanceDto:
+    x-discriminator-value: deferred-issue-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          deferredIssueTypeId:
+            type: integer
+            format: int64
+
+  EarningTypeMaintenanceDto:
+    x-discriminator-value: earning-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          earningTypeId:
+            type: integer
+            format: int64
+
+  FaresCheckingExclusionMaintenanceDto:
+    x-discriminator-value: fares-checking-exclusion
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          faresCheckingExclusionId:
+            type: integer
+            format: int64
+          issuingLocation:
+            type: string
+          originLocation:
+            type: string
+          destinationLocation:
+            type: string
+          route:
+            type: string
+          product:
+            type: string
+          ticketStatus:
+            type: string
+          fareAmount:
+            type: number
+          nullFare:
+            type: string
+          sellingLocation:
+            type: string
+          startDate:
+            type: string
+            format: date
+          endDate:
+            type: string
+            format: date
+
+  FareMethodMarkerMaintenanceDto:
+    x-discriminator-value: fare-method-marker
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          fareMethodMarkerId:
+            type: integer
+            format: int64
+
+  FaresCheckingResultMaintenanceDto:
+    x-discriminator-value: fares-check-result
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          faresCheckingResultId:
+            type: integer
+            format: int64
+
+  LocationMaintenanceDto:
+    x-discriminator-value: location
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          address1:
+            type: string
+          address2:
+            type: string
+          address3:
+            type: string
+          address4:
+            type: string
+          address5:
+            type: string
+          address6:
+            type: string
+          address7:
+            type: string
+          postcode:
+            type: string
+          startDate:
+            type: string
+            format: date
+          endDate:
+            type: string
+            format: date
+          locationId:
+            type: integer
+            format: int64
+          locationTypeId:
+            type: integer
+            format: int64
+          businessId:
+            type: integer
+            format: int64
+
+  LocationGroupMaintenanceDto:
+    x-discriminator-value: location-group
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          groupLocationId:
+            type: integer
+            format: int64
+          memberLocationId:
+            type: integer
+            format: int64
+          locationGroupId:
+            type: integer
+            format: int64
+          locationGroupTypeId:
+            type: integer
+            format: int64
+
+  LocationGroupTypeMaintenanceDto:
+    x-discriminator-value: location-group-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          locationGroupTypeId:
+            type: integer
+            format: int64
+
+  LocationTypeMaintenanceDto:
+    x-discriminator-value: location-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          locationTypeId:
+            type: integer
+            format: int64
+
+  MachineStatusMaintenanceDto:
+    x-discriminator-value: machine-status
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          machineStatusId:
+            type: integer
+            format: int64
+
+  MachineTypeMaintenanceDto:
+    x-discriminator-value: machine-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          terminal:
+            type: string
+          startDate:
+             type: string
+             format: date
+          endDate:
+            type: string
+            format: date
+          machineTypeId:
+            type: integer
+            format: int64
+
+  MethodOfFulfilmentMaintenanceDto:
+    x-discriminator-value: method-of-fulfilment
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          methodOfFulfilmentId:
+            type: integer
+            format: int64
+
+  MethodOfPaymentMaintenanceDto:
+    x-discriminator-value: method-of-paymentD
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          methodOfPaymentId:
+            type: integer
+            format: int64
+
+  MileageRuleMaintenanceDto:
+    x-discriminator-value: mileage-rule
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          mileageRuleId:
+            type: integer
+            format: int64
+          priority:
+            type: integer
+            format: int32
+
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+
+  MileageRuleDestinationMatchMaintenanceDto:
+    x-discriminator-value: mileage-rule-destination-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          mileageRuleDestinationMatchId:
+            type: integer
+            format: int64
+
+  MileageRuleOriginMatchMaintenanceDto:
+    x-discriminator-value: mileage-rule-origin-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          mileageRuleOriginMatchId:
+            type: integer
+            format: int64
+
+  MileageRuleRouteMatchMaintenanceDto:
+    x-discriminator-value: mileage-rule-route-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          mileageRuleRouteMatchId:
+            type: integer
+            format: int64
+
+  MileageRuleTicketAllocationMatchMaintenanceDto:
+    x-discriminator-value: mileage-rule-ticket-allocation-match
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          mileageRuleTicketAllocationMatchId:
+            type: integer
+            format: int64
+
+  NonIssueMarkerMaintenanceDto:
+    x-discriminator-value: non-issue-marker
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          nonIssueMarkerId:
+            type: integer
+            format: int64
+
+  OperatingModeMaintenanceDto:
+    x-discriminator-value: operating-mode
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          operatingModeId:
+            type: integer
+            format: int64
+
+  OutletTypeMaintenanceDto:
+    x-discriminator-value: outlet-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          outletTypeId:
+            type: integer
+            format: int64
+
+  PeriodStatusMaintenanceDto:
+    x-discriminator-value: period-status
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          periodStatusId:
+            type: integer
+            format: int64
+
+  ProductMaintenanceDto:
+    x-discriminator-value: product
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          journeyFactor:
+            type: integer
+            format: int32
+          startDate:
+            type: string
+            format: date
+          endDate:
+            type: string
+            format: date
+          productId:
+            type: integer
+            format: int64
+          productTypeId:
+            type: integer
+            format: int64
+          classIndicatorId:
+            type: integer
+            format: int64
+          debitCreditTypeId:
+            type: integer
+            format: int64
+          railCardTypeId:
+            type: integer
+            format: int64
+          suspendableIndicatorValueId:
+            type: integer
+            format: int64
+          ticketAllocationTypeId:
+            type: integer
+            format: int64
+
+  ProductGroupMaintenanceDto:
+    x-discriminator-value: product-group
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          groupProductId:
+            type: integer
+            format: int64
+          memberProductId:
+            type: integer
+            format: int64
+          productGroupId:
+            type: integer
+            format: int64
+
+  ProductTypeMaintenanceDto:
+    x-discriminator-value: product-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          productTypeId:
+            type: integer
+            format: int64
+
+  RailCardTypeMaintenanceDto:
+    x-discriminator-value: rail-card-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          railCardTypeId:
+            type: integer
+            format: int64
+
+  ReceiverTypeMaintenanceDto:
+    x-discriminator-value: receiver-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          receiverTypeId:
+            type: integer
+            format: int64
+
+  RecordFieldTypeMaintenanceDto:
+    x-discriminator-value: record-field-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          fieldName:
+            type: string
+          fieldPosition:
+            type: integer
+            format: int32
+          dataType:
+            type: string
+          startPosition:
+            type: integer
+            format: int32
+          fieldLength:
+            type: integer
+            format: int32
+          dataFormat:
+            type: string
+          referenceType:
+            type: string
+          optionalityType:
+            type: string
+          justificationType:
+            type: string
+          paddingType:
+            type: string
+          recordFieldTypeId:
+            type: integer
+            format: int64
+          recordTypeId:
+            type: integer
+            format: int64
+
+  RecordTypeMaintenanceDto:
+    x-discriminator-value: record-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          recordTypeId:
+            type: integer
+            format: int64
+
+  RouteMaintenanceDto:
+    x-discriminator-value: route
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          startDate:
+            type: string
+            format: date
+          endDate:
+            type: string
+            format: date
+          routeId:
+            type: integer
+            format: int64
+          routeTypeId:
+            type: integer
+            format: int64
+          defaultRouteId:
+            type: integer
+            format: int64
+          parentRouteId:
+            type: integer
+            format: int64
+          ticketAllocationTypeId:
+            type: integer
+            format: int64
+
+  RouteTypeMaintenanceDto:
+    x-discriminator-value: route-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          routeTypeId:
+            type: integer
+            format: int64
+
+  SeasonTicketTypeMaintenanceDto:
+    x-discriminator-value: season-ticket-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          seasonTicketTypeId:
+            type: integer
+            format: int64
+
+  ServiceMaintenanceDto:
+    x-discriminator-value: service
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          name:
+            type: string
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+          serviceId:
+            type: integer
+            format: int64
+          serviceTypeId:
+            type: integer
+            format: int64
+          businessId:
+            type: integer
+            format: int64
+          parentServiceId:
+            type: integer
+            format: int64
+
+  ServiceTypeMaintenanceDto:
+    x-discriminator-value: service-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          serviceTypeId:
+            type: integer
+            format: int64
+
+  ShiftIdentityIndicatorMaintenanceDto:
+    x-discriminator-value: shift-identity-indicator
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          shiftIdentityIndicatorId:
+            type: integer
+            format: int64
+
+  SuspendableIndicatorValueMaintenanceDto:
+    x-discriminator-value: suspendable-indicator-value
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          suspendableIndicatorValueId:
+            type: integer
+            format: int64
+
+  SystemParameterMaintenanceDto:
+    x-discriminator-value: system-parameter
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          systemParameterId:
+            type: integer
+            format: int64
+          code:
+            type: string
+          name:
+            type: string
+          dataType:
+            type: string
+          value:
+            type: string
+          description:
+            type: string
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+
+  TicketAllocationTypeDefaultMaintenanceDto:
+    x-discriminator-value: ticket-allocation-type-default
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          sequence:
+            type: integer
+            format: int32
+          ticketAllocationTypeDefaultId:
+            type: integer
+            format: int64
+          ticketAllocationTypeParentId:
+            type: integer
+            format: int64
+          ticketAllocationTypeChildId:
+            type: integer
+            format: int64
+
+  TicketAllocationTypeGroupMaintenanceDto:
+    x-discriminator-value: ticket-allocation-type-group
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          ticketAllocationTypeGroupId:
+            type: integer
+            format: int64
+
+  TicketAllocationTypeMaintenanceDto:
+    x-discriminator-value: ticket-allocation-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          ticketAllocationTypeId:
+            type: integer
+            format: int64
+          ticketAllocationTypeGroupId:
+            type: integer
+            format: int64
+
+  TicketStatusMaintenanceDto:
+    x-discriminator-value: ticket-status
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          code:
+            type: string
+          description:
+            type: string
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+          ticketStatusId:
+            type: integer
+            format: int64
+          railCardTypeId:
+            type: integer
+            format: int64
+          ticketStatusTypeId:
+            type: integer
+            format: int64
+
+  TicketStatusGroupMaintenanceDto:
+    x-discriminator-value: ticket-status-group
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          groupTicketStatusId:
+            type: integer
+            format: int64
+          memberTicketStatusId:
+            type: integer
+            format: int64
+          ticketStatusGroupId:
+            type: integer
+            format: int64
+
+  TicketStatusTypeMaintenanceDto:
+    x-discriminator-value: ticket-status-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          ticketStatusTypeId:
+            type: integer
+            format: int64
+
+  TicketTypeMaintenanceDto:
+    x-discriminator-value: ticket-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          ticketTypeId:
+            type: integer
+            format: int64
+
+  TisMaintenanceDto:
+    x-discriminator-value: tis
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          comment:
+            type: string
+          machineNumber:
+            type: integer
+            format: int32
+          windowNumber:
+            type: integer
+            format: int32
+          softwareVersion:
+            type: string
+          softwareInstalledDate:
+            type: string
+            format: date
+          supplierName:
+            type: string
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+          tisId:
+            type: integer
+            format: int64
+          businessId:
+            type: integer
+            format: int64
+          locationId:
+            type: integer
+            format: int64
+          machineStatusId:
+            type: integer
+            format: int64
+          machineTypeId:
+            type: integer
+            format: int64
+
+  TransactionTypeMaintenanceDto:
+    x-discriminator-value: transaction-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          description:
+            type: string
+          transactionTypeId:
+            type: integer
+            format: int64
+
+  TransactionTypeCatalogueMaintenanceDto:
+    x-discriminator-value: transaction-type-catalogue
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          includeFlag:
+            type: boolean
+          transactionTypeCatalogueId:
+            type: integer
+            format: int64
+          transactionTypeId:
+            type: integer
+            format: int64
+          originLocationId:
+            type: integer
+            format: int64
+          destinationLocationId:
+            type: integer
+            format: int64
+          productId:
+            type: integer
+            format: int64
+          routeId:
+            type: integer
+            format: int64
+          ticketStatusId:
+            type: integer
+            format: int64
+
+  ValueAddedTaxRateMaintenanceDto:
+    x-discriminator-value: value-added-tax-rate
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          valueAddedTaxRateId:
+            type: integer
+            format: int64
+
+
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+
+  ValueAddedTaxValueMaintenanceDto:
+    x-discriminator-value: value-added-tax-value
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+            valueAddedTaxValueId:
+              type: integer
+              format: int64
+            code:
+              type: string
+            name:
+              type: string
+            rate:
+              type: number
+            startDate:
+               type: string
+               format: date
+            endDate:
+               type: string
+               format: date
+
+  ValueAddedTaxRuleProductMatchTypeMaintenanceDto:
+    x-discriminator-value: value-added-tax-rule-product-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+            description:
+              type: string
+            valueAddedTaxRuleProductMatchTypeId:
+              type: integer
+              format: int64
+
+  ValueAddedTaxRuleServiceMatchTypeMaintenanceDto:
+    x-discriminator-value: value-added-tax-rule-service-match-type
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+            description:
+              type: string
+            valueAddedTaxRuleServiceMatchTypeId:
+              type: integer
+              format: int64
+
+  WarrantAccountMaintenanceDto:
+    x-discriminator-value: warrant-account
+    allOf:
+      - $ref: "#/definitions/ReferenceDataMaintenanceDto"
+      - type: object
+        properties:
+          warrantAccountNumber:
+            type: string
+          startDate:
+             type: string
+             format: date
+          endDate:
+             type: string
+             format: date
+          businessId:
+            type: integer
+            format: int64
+          warrantAccountId:
+            type: integer
+            format: int64

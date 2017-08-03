@@ -1,0 +1,17 @@
+.ui-kit-date-picker {
+  position: relative;
+  width: 100%;
+  input {
+    width: 100%;
+  }
+  button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 6px;
+  }
+}
+
+@media #{$breakpoint-lg} {
+
+}

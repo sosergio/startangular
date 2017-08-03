@@ -1,0 +1,34 @@
+{
+  "*":{
+    "id":{
+      "type":"hidden"
+    },
+    "objectType":{
+      "type":"hidden"
+    },
+    "changeEffectiveDate":{
+      "order":1
+    },
+    "approvalStatusId":{
+      "disabled":true,
+      "order":0
+    },
+     "name":{
+      "order":0
+    },
+     "desciption":{
+      "order":0
+    },
+    "hideSelfReference":true
+  },
+  "accounting-sundry":{
+    "id":{
+      "type":"hidden"
+    },
+     "name":{
+      "order":0
+    },
+
+    "hideSelfReference":true
+  }
+}

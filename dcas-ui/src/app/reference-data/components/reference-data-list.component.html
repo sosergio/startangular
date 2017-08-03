@@ -1,0 +1,38 @@
+<div class="dcas-reference-data-list">
+  <dcas-loader *ngIf="isLoading">Loading items...</dcas-loader>
+  <ng-container *ngIf="!isLoading">
+    <div *ngIf="!data || data.length === 0" class="dcas-datagrid-empty">No items found.</div>
+    <div *ngIf="data && data.length > 0" class="dcas-datagrid">
+      <div class="dcas-datagrid-head">
+        <ng-container *ngFor="let c of configs">
+          <a class="dcas-datagrid-cell" (click)="sortBy(c.name)">
+              <span [localize]="c.name"></span>
+              <span *ngIf="sort?.by==c.name" [ngClass]="{'flipXY':sort?.asc==true,'flipX':sort?.asc==false}" class="material-icons">sort</span>
+            </a>
+        </ng-container>
+        <a class="dcas-datagrid-cell tiny"></a>
+      </div>
+      <div class="dcas-datagrid-body">
+        <a class="dcas-datagrid-row" [ngClass]="{'active':activeMenuItem && d.id===activeMenuItem.id}" (click)="rowClickForItem(d)"
+          *ngFor="let d of data">
+          <ng-container *ngFor="let c of configs">
+            <div class="dcas-datagrid-cell" [ngSwitch]="uiKitControlType(c.type)">
+              <span *ngSwitchCase="'select'" [localize]="'enumerations.'+[c.name]+'.'+d[c.name]"></span>
+              <span *ngSwitchCase="'date'">{{d[c.name]|date}}</span>
+              <span *ngSwitchDefault>{{d[c.name]}}</span>
+            </div>
+          </ng-container>
+          <a class="dcas-datagrid-cell tiny" [mdMenuTriggerFor]="menu" (click)="menuClickForItem($event, d)" (onMenuClose)="onMenuClose()">
+            <span class="material-icons">more_vert</span>
+          </a>
+        </a>
+      </div>
+    </div>
+    <md-menu #menu="mdMenu">
+      <button md-menu-item *ngFor="let action of actions" (click)="onActionClick(action)" [disabled]="action.disabled">
+        <span class="material-icons" [localize]="'actions.icons.'+action.type"></span>
+        <span [localize]="'actions.names.'+action.type"></span>
+      </button>
+    </md-menu>
+  </ng-container>
+</div>

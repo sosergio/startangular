@@ -1,0 +1,162 @@
+/*
+ What goes here:
+ any element that can be abstracted in its visual form, in order to be reused around the app without the need of reapplying the style.
+ Example of compound, reusable UI elements: box, cards, grids.
+*/
+
+html,
+body {
+  background-color: $div-bg-extra-light;
+}
+
+.form-control {
+  border-radius: 0; //-webkit-appearance: none;
+}
+
+select.form-control {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  background: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='24' height='24' viewBox='0 0 24 24'><path fill='#444' d='M7.406 7.828l4.594 4.594 4.594-4.594 1.406 1.406-6 6-6-6z'></path></svg>");
+  background-position: 100% 50%;
+  background-repeat: no-repeat;
+}
+
+
+/**
+* __________________________________________________________________
+* DCAS-DATAGRID
+*
+*/
+
+.dcas-datagrid-empty {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.dcas-datagrid {
+  .dcas-datagrid-head {
+    display: none;
+  }
+  .dcas-datagrid-body {
+    border-top: 8px solid $hr-bg;
+    border-left: 1px solid $hr-bg;
+    border-right: 1px solid $hr-bg;
+  }
+  .dcas-datagrid-row {
+    @include flexbox-horizontal();
+    flex-wrap:wrap;
+    align-items:center;
+    border-bottom: 1px solid $hr-bg;
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      background-color: lighten($color-secondary, 4%);
+    }
+    &:active,
+    &.active {
+      background-color: lighten($color-primary, 30%);
+    }
+    .dcas-datagrid-cell:first-child {
+      width: 100%;
+      font-size: $font-size-default;
+      color: $color-text-default;
+    }
+    .dcas-datagrid-cell:last-child {
+      flex:1;
+      text-align: right;
+    }
+    padding-top: ($padding-natural/2);
+    padding-bottom: ($padding-natural/2);
+  }
+  .dcas-datagrid-cell {
+    font-size: $font-size-small;
+    padding-left: $padding-natural;
+    color: $color-text-light;
+    &:last-child {
+      padding-right: $padding-natural;
+    }
+  }
+}
+
+@media #{$breakpoint-lg} {
+  .dcas-datagrid {
+    .dcas-datagrid-head {
+      background-color: $div-bg-light;
+      color: $color-text-default;
+      font-weight: bold;
+      @include flexbox-horizontal();
+      flex-wrap:nowrap;
+      .dcas-datagrid-cell {
+        @include flexbox-horizontal();
+        align-items:center;
+        justify-content:space-between;
+        user-select: none;
+        .material-icons {
+          margin: 0;
+          padding: 0 $padding-natural;
+        }
+        &:hover,
+        &:focus {
+          text-decoration: none;
+          background-color: lighten($color-secondary, 5%);
+        }
+        &:active,
+        &.active {
+          background-color: lighten($color-primary, 30%);
+        }
+      }
+    }
+    .dcas-datagrid-body {
+      border-top: none;
+    }
+    .dcas-datagrid-row {
+      @include flexbox-horizontal();
+      flex-wrap:nowrap;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .dcas-datagrid-cell {
+      padding-top: ($padding-natural/2);
+      padding-bottom: ($padding-natural/2);
+      font-size: $font-size-default;
+      color: $color-text-default;
+      flex:4;
+      &.tiny {
+        flex:1;
+      }
+      &.small {
+        flex:2;
+      }
+      &.big {
+        flex:8;
+      }
+    }
+  }
+}
+
+
+/**
+*__________________________________________________________________
+* ANGULAR MATERIAL MENU
+*
+*/
+
+.mat-menu-content {
+  font-size: $font-size-default;
+  color: $color-text-default;
+  .mat-menu-item {
+    display: flex;
+    align-items:center;
+    color: $color-text-default;
+  }
+  .mat-menu-item[disabled] {
+    color: $color-text-extra-light;
+  }
+  .material-icons {
+    font-size: $font-size-huge;
+    padding-right: ($padding-natural/2);
+  }
+  hr {
+    margin: 0;
+  }
+}

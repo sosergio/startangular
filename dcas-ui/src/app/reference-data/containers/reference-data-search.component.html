@@ -1,0 +1,41 @@
+<div class="reference-data-search">
+  <dcas-page-header title="Reference Data">
+    <a class="button primary" [routerLink]="['/reference-data','new']"><span class="material-icons">add</span>Add New</a>
+  </dcas-page-header>
+  <main class="container-fluid">
+    <form>
+      <div class="row">
+        <div class="form-group col-xs-9 col-md-6">
+          <label>Reference Data Type</label>
+          <select class="form-control" (change)="onTypeChange($event)" [(ngModel)]="request.objectType" name="objectType">
+          <option *ngFor="let objectType of objectTypes" [value]="objectType" [localize]="objectType"></option>
+        </select>
+        </div>
+        <div class="form-group col-xs-3">
+          <label class="hidden-md hidden-lg">All Versions</label>
+          <md-slide-toggle name="viewToggle" [(ngModel)]="request.includeAllVersions" (change)="onTypeChange($event)" class="form-control slide-detail-view">
+            <span class="hidden-xs hidden-sm">All Versions</span>
+          </md-slide-toggle>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="form-group col-xs-12 col-md-8">
+          <label for="freeText">Search</label>
+          <input class="form-control" type="text" id="freeText" [(ngModel)]="request.freeText" name="freeText" (ngModelChange)="onRequestChange($event)"
+            placeholder="search by keyword" />
+        </div>
+        <div class="form-group col-xs-12 col-md-4" *ngIf="request.includeAllVersions">
+          <label for="status">Status</label>
+          <select class="form-control" [(ngModel)]="request.status" name="status" (ngModelChange)="onRequestChange($event)">
+            <option [ngValue]="null">All</option>
+            <option *ngFor="let s of allStatuses" [value]="s.key" [localize]="'enumerations.approvalStatusId.'+s.key"></option>
+        </select>
+        </div>
+      </div>
+    </form>
+    <dcas-reference-data-list [isLoading]="isLoading" [data]="response?.data" [configs]="configs" (onSortChanged)="onSortChanged($event)" (onAction)="actionHandler.handle($event)"></dcas-reference-data-list>
+    <dcas-paginator [ngClass]="{'hidden':isLoading}" [itemsCount]="response?.totalCount" [pageSize]="request?.count" (onPageChanged)="onPageChanged($event)"></dcas-paginator>
+    <dcas-reference-data-action-handler #actionHandler></dcas-reference-data-action-handler>
+  </main>
+</div>

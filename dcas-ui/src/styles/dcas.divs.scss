@@ -1,0 +1,12 @@
+/*
+ What goes here:
+ everything that helps in creating a layout for a div (or any other forms of content in a page), ex. background, border, padding, margin
+*/
+
+.invisible{
+  visibility: hidden;
+}
+
+main{
+  margin:$padding-natural;
+}

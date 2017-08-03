@@ -1,0 +1,39 @@
+.dcas-menu {
+  font-size:$font-size-big;
+  .logo {
+    height: $height-headers;
+    display: flex;
+    align-items:center;
+    padding-left: $padding-natural;
+    padding-right: $padding-natural;
+    img {
+      width: 80%;
+      height: auto;
+    }
+  }
+  .dcas-menu-item {
+    background-color: transparent;
+    color: $color-text-inverse;
+    padding-left: $padding-natural;
+    padding-right: $padding-natural;
+    height: $height-button-big;
+
+    span {
+      padding-right: $padding-natural;
+    }
+    &.active {
+      background-color: $color-primary;
+    }
+    .sub{
+      font-size:$font-size-default;
+      display: block;
+      color:$color-text-inverse-light;
+    }
+  }
+  a.dcas-menu-item {
+    @include flexbox-horizontal();
+    align-items:center;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+}

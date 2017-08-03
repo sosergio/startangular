@@ -1,0 +1,46 @@
+.dcas-page-header{
+  @include flexbox-horizontal();
+  align-items:center;
+  background-color:$div-bg-light;
+  height: $height-headers;
+  padding-left:$padding-natural;
+  padding-right:$padding-natural;
+
+  .title-area{
+    @include flexbox-vertical();
+    flex:1;
+
+    h2{
+      margin:0;
+      font-size:$font-size-big;
+      color:$color-primary;
+      text-transform: uppercase;
+    }
+    p{
+      margin:0;
+      font-size:$font-size-small;
+      a{
+        text-decoration:none;
+        color:$color-text-default;
+        .material-icons{
+          font-size:$font-size-small;
+          font-size: 10pt;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+  a.shell-nav-toggle {
+    color:$color-text-default;
+    padding-right: $padding-natural;
+  }
+}
+
+
+@media #{$breakpoint-lg} {
+ .dcas-page-header{
+    a.shell-nav-toggle {
+      display: none;
+    }
+  }
+}

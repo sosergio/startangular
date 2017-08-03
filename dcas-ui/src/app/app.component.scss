@@ -1,0 +1,72 @@
+/* new menu styles */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#shell {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  padding-left: 0px;
+  @include flexbox-horizontal();
+}
+
+#shell-content {
+  flex: 1;
+  left: -$shell-nav-lg-width;
+  transition:left 0.35s ease-in-out;
+}
+
+#shell-nav {
+  z-index: 101;
+  background-color:$div-bg-extra-heavy;
+  min-width: $shell-nav-lg-width;
+  max-width: $shell-nav-lg-width;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  left: -$shell-nav-lg-width;
+  transition: left 0.35s ease-in-out;
+
+  &.visible {
+    left: 0;
+  }
+}
+
+#shell-shader {
+    opacity: 0.5;
+    background: #000;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    display:none;
+
+    &.visible{
+      display: block;
+    }
+}
+
+@media #{$breakpoint-lg} {
+  #shell-content{
+    left: $shell-nav-lg-width;
+    margin-right: $shell-nav-lg-width;
+    position: relative;
+  }
+  #shell-nav {left:0;position:fixed}
+  #shell-shader,
+  #shell-shader.visible {
+    display: none;
+  }
+}
+
+@import "./dcas-menu/dcas-menu";
+@import "./common/common";
+@import "./ui-kit/ui-kit";
+@import "./reference-data/reference-data";

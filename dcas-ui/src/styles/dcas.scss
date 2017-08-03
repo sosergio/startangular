@@ -1,0 +1,28 @@
+.unselectable{
+   user-select: none;
+}
+
+@mixin flexbox-horizontal() {
+	display: flex;
+  flex-direction: row;
+}
+@mixin flexbox-vertical() {
+  display: flex;
+  flex-direction: column;
+}
+
+.rotate180{
+  transform: rotate(180deg);
+}
+.flipXY{
+  transform: scaleY(-1) scaleX(-1);
+}
+.flipX{
+  transform: scaleX(-1);
+}
+
+
+@import './dcas.text';
+@import './dcas.buttons';
+@import './dcas.elements';
+@import './dcas.divs';

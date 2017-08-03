@@ -1,0 +1,18 @@
+version: '2'
+services:
+  bff:
+    build:
+      context: ./dcas-bff
+      dockerfile: node.Dockerfile
+    image: rdg-frontend-dcas/bff
+    container_name: bff-node-container
+    ports:
+      - "5000:5000"
+  ui-nginx:
+    build:
+      context: ./dcas-ui
+      dockerfile: nginx.Dockerfile
+    image: rdg-frontend-dcas/ui
+    container_name: ui-nginx-container
+    ports:
+      - "80:80"

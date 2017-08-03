@@ -1,0 +1,11 @@
+//variables
+@import './styles/variables';
+
+//mixins
+@import './styles/form-reset.mixins';
+
+//dcas base styles
+@import './styles/dcas';
+
+//initial component style
+@import './app/app.component.scss';

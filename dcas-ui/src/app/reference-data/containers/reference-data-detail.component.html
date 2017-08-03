@@ -1,0 +1,35 @@
+<dcas-page-header></dcas-page-header>
+<main class="container-fluid">
+  <form novalidate>
+    <div class="row">
+      <div class="form-group col-xs-12 col-md-6" [formGroup]="referenceDataForm">
+        <label>Reference Data Type</label>
+        <select class="form-control" (change)="onTypeChange()" formControlName="objectType">
+            <option *ngFor="let objectType of objectTypes" [value]="objectType" [localize]="objectType"></option>
+        </select>
+      </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="controlsConfig">
+      <dcas-dynamic-control *ngFor="let config of controlsConfig" [config]="config" [formGroup]="referenceDataForm"></dcas-dynamic-control>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="form-group col-xs-12">
+        <button class="button primary" (click)="save()" [disabled]="isSaveDisabled"><span class="material-icons">done</span>Save</button>
+        <a class="button secondary" [mdMenuTriggerFor]="menu"><span class="material-icons">keyboard_arrow_down</span>More Actions</a>
+        <a class="button secondary pull-right" [routerLink]="['/reference-data']"><span class="material-icons">clear</span>Close</a>
+      </div>
+    </div>
+  </form>
+  <!--<p>Form value: {{ referenceDataForm.getRawValue() | json }}</p>
+  <p>Form status: {{ referenceDataForm.status | json }}</p>-->
+  <md-menu #menu="mdMenu">
+    <button md-menu-item *ngFor="let action of actions" (click)="actionHandler.handle(action)" [disabled]="action.disabled">
+        <span class="material-icons" [localize]="'actions.icons.'+action.type"></span>
+        <span [localize]="'actions.names.'+action.type"></span>
+      </button>
+  </md-menu>
+  <dcas-reference-data-action-handler #actionHandler></dcas-reference-data-action-handler>
+
+</main>

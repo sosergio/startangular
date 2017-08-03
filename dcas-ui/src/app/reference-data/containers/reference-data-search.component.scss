@@ -1,0 +1,15 @@
+ .reference-data-search{
+
+    .slide-detail-view{
+      border:none;
+      border-width: 0;
+      box-shadow:none;
+    }
+  }
+@media #{$breakpoint-lg} {
+  .reference-data-search{
+    .slide-detail-view{
+      margin-top:25px;
+    }
+  }
+}

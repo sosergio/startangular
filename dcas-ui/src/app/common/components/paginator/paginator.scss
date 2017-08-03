@@ -1,0 +1,47 @@
+.dcas-paginator {
+  text-align: center;
+  text-transform: uppercase;
+  padding: ($padding-natural/2) 0;
+  margin: auto;
+  user-select: none;
+  font-size: $font-size-huge;
+  a {
+    user-select: none;
+    text-decoration: none;
+    color: $color-text-light;
+    line-height: 15pt;
+    padding: 3px 6px;
+
+    &.disabled {
+      color: $color-text-extra-light;
+    }
+    i {
+      font-size: $font-size-humongous;
+      line-height: $font-size-humongous;
+      vertical-align: bottom;
+    }
+  }
+  .page {
+    font-size: $font-size-default;
+    border: 1px solid transparent;
+    &.active {
+      font-weight: bold;
+      border: 1px solid $color-primary;
+      color: $color-primary;
+    }
+  }
+  span {
+    display: none;
+    font-size: $font-size-small;
+    color: $color-text-light;
+  }
+}
+
+@media #{$breakpoint-lg} {
+  .dcas-paginator {
+    span {
+      display: inline;
+    }
+
+  }
+}

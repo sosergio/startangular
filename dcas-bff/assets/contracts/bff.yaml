@@ -1,0 +1,70 @@
+swagger: '2.0'
+info:
+  title: DCAS PORTAL BFF
+  description: A REST API for DCAS.
+  version: "1.0.0"
+basePath: /
+produces:
+  - application/json
+parameters:
+  cn:
+    in: header
+    name: cn
+    description: IAM user id.
+    required: false
+    type: string
+    format: string
+  businessid:
+    in: header
+    name: businessId
+    description: IAM TOC id.
+    required: false
+    type: string
+    format: string
+  roles:
+    in: header
+    name: roles
+    description: IAM user roles.
+    required: false
+    type: string
+    format: string
+paths:
+  /authorise:
+    parameters:
+      - $ref: '#/parameters/cn'
+      - $ref: '#/parameters/roles'
+      - $ref: '#/parameters/businessid'
+    get:
+      summary: Gets the application permissions for this user.
+      description: |
+        This endpoint is for getting user permissions.
+      operationId: getAuthorisation
+      tags:
+        - Permissions
+      responses:
+        200:
+          description: User roles
+          schema:
+            type: array
+            items:
+              type: string
+definitions:
+  ProblemDetails:
+    type: object
+    properties:
+      type:
+        type: string
+      title:
+        type: string
+      detail:
+        type: string
+      errors:
+        type: array
+        items: {
+          $ref: "#/definitions/ValidationProblemDetails"
+        }
+  ValidationProblemDetails:
+    type: object
+    properties:
+      field:
+        type: string

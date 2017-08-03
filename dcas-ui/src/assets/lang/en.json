@@ -1,0 +1,38 @@
+{
+  "objectType": "Type",
+  "approvalStatusId": "Status",
+
+  "enumerations": {
+    "approvalStatusId": {
+      "1": "Draft",
+      "2": "Awaiting Approval",
+      "3": "Approved"
+    }
+  },
+  "actions":{
+    "icons":{
+      "1": "visibility",
+      "2": "mode_edit",
+      "3": "content_copy",
+      "4": "delete",
+      "5": "done_all",
+      "6": "undo",
+      "7": "input",
+      "8": "block",
+      "9": "not_interested",
+      "10": "error_outline"
+    },
+    "names":{
+      "1": "View",
+      "2": "Amend",
+      "3": "Make a copy",
+      "4": "Delete",
+      "5": "Approve",
+      "6": "Withdraw",
+      "7": "Submit",
+      "8": "Save",
+      "9": "Reject",
+      "10": "Retract"
+    }
+  }
+}

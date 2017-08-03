@@ -1,0 +1,68 @@
+/*
+ What goes here:
+ any style that helps in defyining the layout of a button or link, ex. border, colors, states
+*/
+
+a,
+button,
+.pointer {
+  cursor: pointer;
+  &.disabled {
+    cursor: default;
+  }
+}
+
+a.button,
+button.button,
+.button,
+button,
+input[type='button'] {
+  border: none;
+  padding: 0;
+  padding-left: ($padding-natural/2);
+  padding-right: ($padding-natural - 4);
+  font-size: $font-size-default;
+  display: inline-block;
+  text-decoration: none;
+  line-height: $height-button-normal;
+  height: $height-button-normal;
+  text-transform: uppercase;
+  user-select: none;
+  &.primary {
+    background-color: $color-primary;
+    color: $color-text-inverse;
+    &:hover,
+    &:focus {
+      background-color: darken($color-primary, 5%);
+    }
+  }
+  &.secondary {
+    background-color: $color-secondary;
+    color: $color-text-default;
+    &:hover,
+    &:focus {
+      color: $color-primary;
+    }
+  }
+  .material-icons {
+    vertical-align: sub;
+    padding-right: ($padding-natural/4);
+    font-size: ($font-size-default+3);
+  }
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+  &:active {}
+  &:disabled{
+    background-color: $color-secondary;
+    color:$color-text-extra-light;
+
+    &:hover,
+    &:focus {
+      background-color: $color-secondary;
+      color:$color-text-extra-light;
+      cursor:not-allowed;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+//Custom Media Query Variables
+$breakpoint-sm: '(max-width: 600px)' !default;
+$breakpoint-md: '(min-width: 601px) and (max-width: 992px)' !default;
+$breakpoint-lg: '(min-width: 993px)' !default;
+//fonts families
+$font-family-default:'Open Sans', sans-serif;
+//fonts sizes
+$font-size-tiny:5pt;
+$font-size-small:9pt;
+$font-size-default:11pt;
+$font-size-big:13pt;
+$font-size-huge:18pt;
+$font-size-humongous:20pt;
+$font-size-visible-from-moon:25pt;
+//colors generic
+$color-text-default:#4D4E4F;
+$color-text-light:#6E6F6F;
+$color-text-extra-light:#95989A;
+$color-text-inverse:#fff;
+$color-text-inverse-light:darken($color-text-inverse, 10%);
+$color-text-inverse-extra-light:darken($color-text-inverse, 40%);
+$color-error:#F44336;
+$color-error-heavy:#B71C1C;
+$color-success:#4CAF50;
+$color-success-heavy:#1B5E20;
+
+//feature colors
+$color-primary:#4B7EF7;
+$color-secondary:#EBEEED;
+//page elements
+$hr-bg:#EBEEED;
+$div-bg-extra-light:#fff;
+$div-bg-light:#EBEEED;
+$div-bg:#A7ADAF;
+$div-bg-heavy:#4D4E4F;
+$div-bg-extra-heavy:#2E3039;
+$div-bg-max-heavy:#000;
+//element specific shared variables
+$shell-nav-lg-width:300px;
+//padding
+$padding-natural:20px;
+//heights
+$height-headers:112px;
+$height-button-big:56px;
+$height-button-normal:40px;
+
